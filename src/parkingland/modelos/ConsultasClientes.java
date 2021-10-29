@@ -11,19 +11,22 @@ public class ConsultasClientes extends ModeloBD{
     PreparedStatement consultaSQL;
     ResultSet resultadoSQL;
     
-    public boolean registrarClientes(ModeloVehiculo vehiculo){
+    public boolean registrarClientes(ModeloCliente cliente){
         
         Connection conexion = conectarBD_HemaSoft();
-        String queryvehiculo = "INSERT INTO vehiculos(placa, marca, tipo)"
-                + "VALUES (?,?,?)";
+        String querycliente = "INSERT INTO clientes(cedula, nombre, apellidos, telefono_movil, telefono_fijo) "
+                + "VALUES (?,?,?,?,?)";
         
         try{
             
-            consultaSQL = conexion.prepareStatement(queryvehiculo);
+            consultaSQL = conexion.prepareStatement(querycliente);
             
-            consultaSQL.setString(1, vehiculo.getPlaca());
-            consultaSQL.setString(2, vehiculo.getMarca());
-            consultaSQL.setString(3, vehiculo.getTipo());
+            consultaSQL.setInt(1, cliente.getCedula());
+            consultaSQL.setString(3, cliente.getApellidos());
+            consultaSQL.setString(2, cliente.getNombres());
+            consultaSQL.setInt(1, cliente.getTelefono_movil());
+            consultaSQL.setInt(1, cliente.getTelefono_fijo());
+         
             
             int resultado = consultaSQL.executeUpdate();
             
@@ -43,27 +46,30 @@ public class ConsultasClientes extends ModeloBD{
         
     }
     
-    public ModeloVehiculo buscarVehiculos(String placa){
+    public ModeloCliente buscarCliente(int cedula){
         
         Connection conexion = conectarBD_HemaSoft();
-        String queryvehiculo = "SELECT * from vehiculos where placa=?";
+        String querycliente = "SELECT * from clientes where cedula=?";
         
         try{
            
-            consultaSQL = conexion.prepareStatement(queryvehiculo);
+            consultaSQL = conexion.prepareStatement(querycliente);
             
-            consultaSQL.setString(1,placa);
+            consultaSQL.setInt(1,cedula);
             
             resultadoSQL= consultaSQL.executeQuery();
             
-            ModeloVehiculo vehiculo = new ModeloVehiculo();
+            ModeloCliente cliente = new ModeloCliente();
             
             if(resultadoSQL.next()){
-                vehiculo.setPlaca(resultadoSQL.getString("placa"));
-                vehiculo.setMarca(resultadoSQL.getString("marca"));
-                vehiculo.setTipo(resultadoSQL.getString("tipo"));
+                cliente.setCedula(resultadoSQL.getInt("cedula"));
+                cliente.setNombres(resultadoSQL.getString("nombre"));
+                cliente.setApellidos(resultadoSQL.getString("apellidos"));
+                cliente.setTelefono_movil(resultadoSQL.getInt("telefono_movil"));
+                cliente.setTelefono_fijo(resultadoSQL.getInt("telefono_fijo"));
+               
                 
-                return vehiculo;
+                return cliente;
                 
             }else{
                 return null;
