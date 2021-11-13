@@ -3,6 +3,7 @@ package parkingland;
 
 import parkingland.controladores.Controlador;
 import parkingland.modelos.ModeloBD;
+import parkingland.vistas.VistaHome;
 import parkingland.vistas.Vista_parkingLand;
 
 
@@ -13,10 +14,12 @@ public class ParkingLand {
      */
     public static void main(String[] args) {
         
-         ModeloBD modelo = new ModeloBD();
+        ModeloBD modelo = new ModeloBD();
         Vista_parkingLand vista = new Vista_parkingLand();
         vista.setVisible(true);
-        Controlador controlador = new Controlador(modelo, vista);
+        VistaHome home = new VistaHome(); 
+        home.setVisible(true);
+        Controlador controlador = new Controlador(modelo, vista, home);
     }
     
 }
